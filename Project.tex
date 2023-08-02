@@ -1,0 +1,717 @@
+% Some basic packages
+\documentclass[letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[english]{babel}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{adjustbox}
+\usepackage{hyperref}
+\usepackage[binary-units]{siunitx}
+\sisetup{
+	round-mode=places,
+	round-precision=4
+}
+
+
+
+%margins
+\usepackage[margin=0.75in]{geometry}
+
+% Don't indent paragraphs, leave some space between them
+\usepackage{parskip}
+
+% Hide page number when page is empty
+\usepackage{emptypage}
+\usepackage{subcaption}
+\usepackage{multicol}
+\usepackage{xcolor}
+
+% Other font I sometimes use.
+% \usepackage{cmbright}
+
+% Math stuff
+\usepackage{amsmath, amsfonts, mathtools, amsthm, amssymb}
+% Fancy script capitals
+\usepackage{mathrsfs}
+\usepackage{cancel}
+% Bold math
+\usepackage{bm}
+% Some shortcuts
+\newcommand\N{\ensuremath{\mathbb{N}}}
+\newcommand\R{\ensuremath{\mathbb{R}}}
+\newcommand\Z{\ensuremath{\mathbb{Z}}}
+\renewcommand\O{\ensuremath{\emptyset}}
+\newcommand\Q{\ensuremath{\mathbb{Q}}}
+\newcommand\C{\ensuremath{\mathbb{C}}}
+
+% Easily typeset systems of equations (French package)
+\usepackage{systeme}
+
+% Put x \to \infty below \lim
+\let\svlim\lim\def\lim{\svlim\limits}
+
+%Make implies and impliedby shorter
+\let\implies\Rightarrow
+\let\impliedby\Leftarrow
+\let\iff\Leftrightarrow
+\let\epsilon\varepsilon
+
+% Add \contra symbol to denote contradiction
+\usepackage{stmaryrd} % for \lightning
+\newcommand\contra{\scalebox{1.5}{$\lightning$}}
+
+% \let\phi\varphi
+
+% Command for short corrections
+% Usage: 1+1=\correct{3}{2}
+
+\definecolor{correct}{HTML}{009900}
+\newcommand\correct[2]{\ensuremath{\:}{\color{red}{#1}}\ensuremath{\to }{\color{correct}{#2}}\ensuremath{\:}}
+\newcommand\green[1]{{\color{correct}{#1}}}
+
+% horizontal rule
+\newcommand\hr{
+    \noindent\rule[0.5ex]{\linewidth}{0.5pt}
+}
+
+% hide parts
+\newcommand\hide[1]{}
+
+% si unitx
+\usepackage{siunitx}
+\sisetup{locale = US}
+
+% Environments
+\makeatother
+% For box around Definition, Theorem, \ldots
+\usepackage{mdframed}
+\mdfsetup{skipabove=1em,skipbelow=0em}
+\theoremstyle{definition}
+\newmdtheoremenv[nobreak=true]{lemma}{Lemma}
+\newmdtheoremenv[nobreak=true]{postulate}{Postulate}
+\newmdtheoremenv{conclusion}{Conclusion}
+\newmdtheoremenv{assume}{Assume}
+\newtheorem*{observe}{Observe}
+\newtheorem*{comment}{Comment}
+\newtheorem*{practice}{Practice}
+\newtheorem*{problem}{Problem}
+\newtheorem*{terminology}{Terminology}
+\newtheorem*{application}{Application}
+\newtheorem*{question}{Question}
+
+\newmdtheoremenv[nobreak=true]{definition}{Definition}
+\newtheorem*{eg}{Example}
+\newtheorem*{notation}{Notation}
+\newtheorem*{previouslyseen}{As previously seen}
+\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
+\newtheorem*{property}{Property}
+\newtheorem*{intuition}{Intuition}
+\newmdtheoremenv[nobreak=true]{prop}{Proposition}
+\newmdtheoremenv[nobreak=true]{theorem}{Theorem}
+\newmdtheoremenv[nobreak=true]{corollary}{Corollary}
+
+% End example and intermezzo environments with a small diamond (just like proof
+% environments end with a small square)
+\usepackage{etoolbox}
+\AtEndEnvironment{vb}{\null\hfill$\diamond$}%
+\AtEndEnvironment{intermezzo}{\null\hfill$\diamond$}%
+% \AtEndEnvironment{opmerking}{\null\hfill$\diamond$}%
+
+% Fix some spacing
+% http://tex.stackexchange.com/questions/22119/how-can-i-change-the-spacing-before-theorems-with-amsthm
+\makeatletter
+\def\thm@space@setup{%
+  \thm@preskip=\parskip \thm@postskip=0pt
+}
+
+
+% Exercise 
+% Usage:
+% \exercise{5}
+% \subexercise{1}
+% \subexercise{2}
+% \subexercise{3}
+% gives
+% Exercise 5
+%   Exercise 5.1
+%   Exercise 5.2
+%   Exercise 5.3
+\newcommand{\exercise}[1]{%
+    \def\@exercise{#1}%
+    \subsection*{Exercise #1}
+}
+
+\newcommand{\subexercise}[1]{%
+    \subsubsection*{Exercise \@exercise.#1}
+}
+
+
+% \lecture starts a new lecture (les in dutch)
+%
+% Usage:
+% \lecture{1}{di 12 feb 2019 16:00}{Inleiding}
+%
+% This adds a section heading with the number / title of the lecture and a
+% margin paragraph with the date.
+
+% I use \dateparts here to hide the year (2019). This way, I can easily parse
+% the date of each lecture unambiguously while still having a human-friendly
+% short format printed to the pdf.
+
+\usepackage{xifthen}
+\def\testdateparts#1{\dateparts#1\relax}
+\def\dateparts#1 #2 #3 #4 #5\relax{
+    \marginpar{\small\textsf{\mbox{#1 #2 #3 #5}}}
+}
+
+% \def\@lecture{}%
+% \newcommand{\lecture}[3]{
+%     \ifthenelse{\isempty{#3}}{%
+%         \def\@lecture{Lecture #1}%
+%     }{%
+%         \def\@lecture{Lecture #1: #3}%
+%     }%
+%     \subsection*{\@lecture}
+%     \marginpar{\small\textsf{\mbox{#2}}}
+% }
+
+
+
+% These are the fancy headers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+% LE: left even
+% RO: right odd
+% CE, CO: center even, center odd
+% My name for when I print my lecture notes to use for an open book exam.
+% \fancyhead[LE,RO]{Jared Anderson}
+
+% \fancyhead[RO,LE]{\@lecture} % Right odd,  Left even
+\fancyhead[RE,LO]{}          % Right even, Left odd
+
+\fancyfoot[RO,LE]{\thepage}  % Right odd,  Left even
+\fancyfoot[RE,LO]{}          % Right even, Left odd
+\fancyfoot[C]{\leftmark}     % Center
+
+\makeatother
+
+
+
+
+% Todonotes and inline notes in fancy boxes
+\usepackage{todonotes}
+\usepackage{tcolorbox}
+
+% Make boxes breakable
+\tcbuselibrary{breakable}
+
+% Verbetering is correction in Dutch
+% Usage: 
+% \begin{verbetering}
+%     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+%     tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+%     vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+%     no sea takimata sanctus est Lorem ipsum dolor sit amet.
+% \end{verbetering}
+\newenvironment{correction}{\begin{tcolorbox}[
+    arc=0mm,
+    colback=white,
+    colframe=green!60!black,
+    title=Opmerking,
+    fonttitle=\sffamily,
+    breakable
+]}{\end{tcolorbox}}
+
+% Noot is note in Dutch. Same as 'verbetering' but color of box is different
+\newenvironment{aside}[1]{\begin{tcolorbox}[
+    arc=0mm,
+    colback=white,
+    colframe=white!60!black,
+    title=#1,
+    fonttitle=\sffamily,
+    breakable
+]}{\end{tcolorbox}}
+
+
+
+
+% Figure support 
+\usepackage{import}
+\usepackage{xifthen}
+% \pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[2][1]{%
+    \def\svgwidth{#1\columnwidth}
+    \import{./figures/}{#2.pdf_tex}
+}
+
+\newcommand*{\ml}[2]{\multicolumn{1}{#1}{#2}}
+
+\pdfsuppresswarningpagegroup=1
+
+
+% My name
+\author{Jared Anderson}
+\begin{document}
+		
+\title{
+	Answering Questions With Government Transparency Data\\
+	\large An Exploration of private sector jobs
+}
+
+\maketitle
+    
+    
+
+    
+If I decided to get a ``real'' job, and stop being an IT contractor,
+working in the public sector is an option. I know they get decent
+benefits, but there are a lot of factors to weigh. This is an
+exploration of government jobs and salaries pulled from Oregon's
+government transparancy website.
+
+\hypertarget{some-assumptions-and-caveats}{%
+\subsection{Some Assumptions and
+Caveats}\label{some-assumptions-and-caveats}}
+
+\begin{enumerate} \item This data is real life and economic in nature, which is to say, messy
+	and somewhat unnatural
+
+  \begin{itemize}
+  \item
+    I will be using an $\alpha$ of 0.05–this isn't physics. As this is essentially
+	economic data, this seems appropriate.
+  \item
+	  Confidence intervals will be set to 90\% in keeping with our generosity in terms of
+	  precision.
+\item
+	When calculating certain statistics, I will be sampling from the data. This is to
+	allow certain statistics to be computed using the tools I have learned. Other times
+	this is done to estimate a simpler distribution than the entire population's real
+	distribution. Any time this is done, it will be explicitly stated.
+  \end{itemize}
+\item
+	There is a large amount of data, (approximately 27\unit{\mega\byte} of text data). As
+	such, I will be making extensive use of R to calculate certain values and statistics.
+
+  \begin{itemize}
+	\item
+		I will be displaying only partial and/or relevant results in tables.
+	\item
+		Code for the calculations will be made available at \todo{github link}
+
+  \end{itemize}
+\item
+  This is for class. I'm trying to show I learned anything, sometimes
+  the data makes that hard to do:
+
+  \begin{itemize}
+  \item
+	  There will be times where in order to apply a particular statistical test, I will
+	  make the assumption that the data is normally distributed. This may not always be
+	  the case. Whenever this assumption is made, I will say so explicitly.
+	\item
+		When feasible, the first time a statistical test is encountered I will be showing
+		how the result of a statistic is calculated. Other statistics will be summarized.
+		Again see the code listing to see how a particular calculation was done.
+  \end{itemize}
+\end{enumerate}
+
+    
+
+\begin{tabular}{r|llllllll}
+  & fiscal.year & agency & classification & salary.annual & full.part.time & service.type & agency.1 & gen\_class\\
+  & <int> & <chr> & <chr> & <int> & <chr> & <chr> & <int> & <chr>\\
+\hline
+	12 & 2015 & CORRECTIONS, DEPT OF    & DENTIST          & 176352 & JOB SHARE & REPRESENTED       & 29100 & DENTIST       \\
+	13 & 2015 & CORRECTIONS, DEPT OF    & DENTIST          & 176352 & PART TIME & REPRESENTED       & 29100 & DENTIST       \\
+	14 & 2015 & CORRECTIONS, DEPT OF    & WELDER 2         &  70494 & FULL TIME & REPRESENTED       & 29100 & WELDER        \\
+	15 & 2015 & CORRECTIONS, DEPT OF    & WELDER 2         &  70806 & FULL TIME & REPRESENTED       & 29100 & WELDER        \\
+	16 & 2015 & EDUCATION, DEPT OF      & CUSTODIAN        &  31632 & PART TIME & REPRESENTED       & 58100 & CUSTODIAN     \\
+	17 & 2015 & EDUCATION, DEPT OF      & CUSTODIAN        &  31632 & PART TIME & REPRESENTED       & 58100 & CUSTODIAN     \\
+	18 & 2015 & EDUCATION, DEPT OF      & CUSTODIAN        &  31632 & PART TIME & REPRESENTED       & 58100 & CUSTODIAN     \\
+	19 & 2015 & YOUTH AUTHORITY, OREGON & FISCAL ANALYST 2 &  69624 & FULL TIME & REPRESENTED       & 41500 & FISCAL ANALYST\\
+	20 & 2015 & YOUTH AUTHORITY, OREGON & FISCAL ANALYST 3 &  62772 & FULL TIME & EXECUTIVE SERVICE & 41500 & FISCAL ANALYST\\
+\end{tabular}
+
+	\hypertarget{getting-my-feet-wet-creeping-on-people-i-met-once}{ 
+		\section{An Exercise In Conditional Probability}
+		\label{getting-my-feet-wet-creeping-on-people-i-met-once}}
+
+\hypertarget{which-dept.-did-that-woman-i-met-work-at}{%
+\subsection{Which Dept. Did That Woman I Met Work
+At?}\label{which-dept.-did-that-woman-i-met-work-at}}
+
+I met a woman at a python conference in early 2020. She said she worked
+or had worked for the government as an analyst---I can't remember which.
+We talked about what we did for a while, and I asked how well her job
+payed; she said that she made ``around 65 grand'' per year.
+
+To do this analysis, we're gonna make some assumptions and pretend some
+stuff.
+
+\begin{itemize}
+\item
+  analyst pay in each dept is normally distributed (it probably isn't
+  exactly, but a look at some graphs look roughly normal, good enough
+  for me)
+\item
+  Pretend I \textbf{don't} have access to the full population dataset
+\end{itemize}
+
+We're gonna pretend that I went to each department and asked 10
+analyists what they made. Also I'll pretend that I did this over the
+period from 2015-2020 (all samples randomly and indepently chosen).
+We'll use that to estimate the distribution for each department.
+
+    \hypertarget{step-1-filter-the-data}{%
+\subsection{Step 1: Filter the data}\label{step-1-filter-the-data}}
+
+    
+
+    \hypertarget{step-2-see-if-theres-even-a-difference-between-the-average-salaries-in-each-department}{%
+\subsection{Step 2: See If There's Even A Difference Between The Average
+Salaries In Each
+Department}\label{step-2-see-if-theres-even-a-difference-between-the-average-salaries-in-each-department}}
+
+To do this, we're going to conduct an anova test. For this test we are
+going to assume: 1. Each departments salary distribution is normal (same
+as we said above) 2. Each departments standard deviation is the same
+(Not something we're really confident about)
+
+The groups for the anova test are going to be the departments. Here are
+our hypotheses:
+
+H0: each department pays their analysts the same on average.
+
+HA: each department does \textbf{not} pay their analysts the same on
+average.
+
+    
+
+    A anova: 2 × 5
+\begin{tabular}{r|lllll}
+  & Df & Sum Sq & Mean Sq & F value & Pr(>F)\\
+  & <int> & <dbl> & <dbl> & <dbl> & <dbl>\\
+\hline
+	dept &  55 &  79328877331 & 1442343224 & 6.126613 & 2.759689e-30\\
+	Residuals & 504 & 118653001472 &  235422622 &       NA &           NA\\
+\end{tabular}
+
+
+    
+    
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_10_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    It's pretty clear looking at the graph that there is quite a lot of
+variance in the mean pay among the departments, With 2 particular
+outliers in the middle.
+
+\hypertarget{step-3-in-comes-the-bayes}{%
+\subsection{Step 3: In Comes The
+Bayes}\label{step-3-in-comes-the-bayes}}
+
+    
+
+\begin{tabular}{r|llll}
+  & agency & avg & sd & p\_sal\_g\_dpt\\
+\hline
+	1 & ADMINISTRATIVE SRVCS, DEPT OF & 77948.4 & 16785.40 & 0.07053486\\
+	2 & AGRICULTURE, DEPT OF          & 71245.2 & 14785.26 & 0.09847170\\
+	3 & AVIATION, DEPARTMENT OF       & 64823.1 & 12195.19 & 0.13025460\\
+	4 & BLIND, COMMISSION FOR THE     & 70572.0 & 13809.25 & 0.10621267\\
+	5 & CHIEF EDUCATION OFFICE        & 69051.6 & 11633.74 & 0.12853961\\
+	6 & COMM COLL/WRKFRCE DEV OFFICE  & 74422.3 & 12343.27 & 0.09642987\\
+\end{tabular}
+
+
+    
+    
+
+All conditional probs sum to 1:  TRUE
+
+\begin{tabular}{r|ll}
+  & agency & p\_dpt\_g\_sal\\
+  & <chr> & <dbl>\\
+\hline
+	1 & ADMINISTRATIVE SRVCS, DEPT OF & 0.03561180\\
+	8 & CONSUMER AND BUS SRVCS, DEPT  & 0.03643026\\
+	46 & PUBLIC EMPS RETIREMENT SYSTEM & 0.06175604\\
+	52 & TRANSPORTATION, DEPT OF       & 0.10322827\\
+	39 & OREGON HEALTH AUTHORITY       & 0.18219138\\
+	21 & HUMAN SERVICES, DEPARTMENT OF & 0.21858462\\
+\end{tabular}
+
+
+    
+    
+
+     "Hand Calculations and R agree!"
+The Corrolation coeficient "r" for these two variables is  0.9829046
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_14_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Yep, an almost perfect positive corrolation. We could have saved a ton
+of work if we had just looked at the porportions of total analysts. A
+little depressing.
+
+    \hypertarget{now-its-all-about-me}{%
+\section{Now It's All About ME}\label{now-its-all-about-me}}
+
+Now that I've become a little more familiar with the data, it's time to
+do some statistics that help answer my more pressing concerns. Is it
+worth it for me to try to get into the public sector?
+
+    \hypertarget{will-the-public-sector-even-be-hiring}{%
+\section{Will The Public Sector Even Be
+Hiring?}\label{will-the-public-sector-even-be-hiring}}
+
+\hypertarget{overall-year-over-year-job-growth}{%
+\subsubsection{Overall Year-Over-Year Job
+Growth}\label{overall-year-over-year-job-growth}}
+
+First things first, will there even be enough growth in the govenment
+for me to get hired?
+
+    
+
+Job Growth Estimate:  1013.798
+
+
+90\% confidence interval for job growth: [ 295.7503 1731.845 ]
+
+
+Expected new jobs in 2023:  -2351
+
+
+P-value:  0.033577805792559
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_18_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{itemize}
+\item
+  It looks like we may expect OR to \emph{lose} about 2300 jobs next
+  year. This is likely because 2023 seems to be an outlier in growth.
+  Wheter this will be the case that 2023 will be a regression to the
+  mean, or that 2023 will be the start of a new boom in jobs (something
+  that will make us increase our growth predictions) is anyone's guess.
+\item
+  We are 95\% certain that they will add on between 295 and 1731
+  additional jobs on average year-over-year. Our predictive precision
+  here is not that great.
+\item
+  our p-value indicates that with our alpha of 0.05, and a p-value of
+  0.0336, we can conclude that on average they are indeed growing their
+  workforce.
+\item
+  Growth is growth, but maybe I should hold off on applying for a job
+  next year.
+\end{itemize}
+
+    \hypertarget{which-departments-are-experiencing-positive-average-growth}{%
+\section{Which Departments Are Experiencing Positive Average
+Growth}\label{which-departments-are-experiencing-positive-average-growth}}
+
+    
+
+\begin{tabular}{r|ll}
+  & Dept & Growth\\
+  & <chr> & <dbl>\\
+\hline
+	9 & HOUSING \& COMM SRVCS, DEPT OF &  19.00000\\
+	1 & ADMINISTRATIVE SRVCS, DEPT OF &  19.75000\\
+	18 & POLICE, OREGON STATE          &  19.90476\\
+	4 & EDUCATION, DEPT OF            &  26.94048\\
+	5 & EMPLOYMENT DEPT               & 157.70238\\
+	10 & HUMAN SERVICES, DEPARTMENT OF & 429.65476\\
+\end{tabular}
+
+
+    
+    
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_22_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Growth seems to be heavily concentrated almost exponentially in certain
+departments
+
+\hypertarget{looking-at-jobs-im-willing-and-qualified-to-work}{%
+\section{Looking At Jobs I'm Willing And Qualified To
+Work}\label{looking-at-jobs-im-willing-and-qualified-to-work}}
+
+    
+
+    
+
+Rows of interesting data : 6068
+
+\begin{tabular}{r|llllllll}
+  & fiscal.year & agency & classification & salary.annual & full.part.time & service.type & agency.1 & gen\_class\\
+  & <int> & <chr> & <chr> & <int> & <chr> & <chr> & <int> & <chr>\\
+\hline
+	300 & 2015 & ADMINISTRATIVE SRVCS, DEPT OF & ACCOUNTING TECH 2 & 33072 & FULL TIME & REPRESENTED & 10700 & ACCOUNTING TECH\\
+	301 & 2015 & ADMINISTRATIVE SRVCS, DEPT OF & ACCOUNTING TECH 2 & 34476 & FULL TIME & REPRESENTED & 10700 & ACCOUNTING TECH\\
+	302 & 2015 & ADMINISTRATIVE SRVCS, DEPT OF & ACCOUNTING TECH 2 & 41454 & FULL TIME & REPRESENTED & 10700 & ACCOUNTING TECH\\
+	303 & 2015 & ADMINISTRATIVE SRVCS, DEPT OF & ACCOUNTING TECH 2 & 43284 & FULL TIME & REPRESENTED & 10700 & ACCOUNTING TECH\\
+	304 & 2015 & ADMINISTRATIVE SRVCS, DEPT OF & ACCOUNTING TECH 2 & 45448 & FULL TIME & REPRESENTED & 10700 & ACCOUNTING TECH\\
+	305 & 2015 & ADMINISTRATIVE SRVCS, DEPT OF & ACCOUNTING TECH 3 & 34476 & FULL TIME & REPRESENTED & 10700 & ACCOUNTING TECH\\
+	306 & 2015 & ADMINISTRATIVE SRVCS, DEPT OF & ACCOUNTING TECH 3 & 34476 & FULL TIME & REPRESENTED & 10700 & ACCOUNTING TECH\\
+	307 & 2015 & ADMINISTRATIVE SRVCS, DEPT OF & ACCOUNTING TECH 3 & 37668 & FULL TIME & REPRESENTED & 10700 & ACCOUNTING TECH\\
+	308 & 2015 & ADMINISTRATIVE SRVCS, DEPT OF & ACCOUNTING TECH 3 & 37668 & FULL TIME & REPRESENTED & 10700 & ACCOUNTING TECH\\
+\end{tabular}
+
+
+    
+    \hypertarget{how-many-new-positions-that-i-might-be-interested-in-do-i-expect-to-be-added-next-year}{%
+\section{How Many New Positions That I Might Be Interested In Do I
+Expect To Be Added Next
+Year?}\label{how-many-new-positions-that-i-might-be-interested-in-do-i-expect-to-be-added-next-year}}
+
+    
+
+I estimate that there will be -2 new jobs I can apply to next year.
+With a 90\% confidence interval of the average yearly growh between [ 4.734924
+16.3127 ]
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_26_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    
+
+\begin{tabular}{r|llll}
+  & job & new.jobs.2023 & average.growth.rate & p.val\\
+  & <chr> & <dbl> & <dbl> & <dbl>\\
+\hline
+	1 & CUSTODIAN        &  -1.75000 & 1.583333 & 0.02628355\\
+	2 & RESEARCH ANALYST & -18.03571 & 5.380952 & 0.03370504\\
+\end{tabular}
+
+
+    
+    It looks like I'm confident that they'll be looking for custodians and
+research analysts at some point. But because 2022 seems to be such an
+outlier, my model expects some sort of regression-to-the-mean. So
+according to the data and my statistical models, I shouldn't be planning
+to get a job next year.
+
+\hypertarget{which-jobs-that-i-could-do-have-the-most-fair-pay}{%
+\section{Which Jobs That I Could Do Have The Most Fair
+Pay?}\label{which-jobs-that-i-could-do-have-the-most-fair-pay}}
+
+looking at the data, there are many jobs descriptions that are followed
+by numbers. I take this to mean that you can be promoted from one level
+to another. If I did one of these jobs (one's I'd be willing to do),
+it's important to me that I'm working with people that are being paid
+fairly---it makes for a less hostile work enviornment. In this case,
+I'll settle for the qualifyer that the salaries in that job are normally
+distributed.
+
+    
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_29_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_29_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_29_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_29_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_29_4.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_29_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_29_6.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_29_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_29_8.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_29_9.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_29_10.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Project_files/Project_29_11.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    
+
+\begin{tabular}{r|lS}
+	& \ml{l}{job} & \ml{l}{shapiro.p}\\
+\hline
+	4 & RESEARCH ANALYST                             & 0.80949281\\
+	1 & ACCOUNTING TECH                              & 0.64147751\\
+	3 & ASSOCIATE IN GEOLOGY                         & 0.46369124\\
+	6 & TRUCK DRIVER                                 & 0.34486630\\
+	2 & ARCHIVIST                                    & 0.26270285\\
+	5 & TRANSPORTATION TELECOMMUNICATIONS SPECIALIST & 0.00694868\\
+\end{tabular}
+
+
+    
+    Well, it looks like \textbf{most} of the positions that I'm interested
+have strong evidence in favor of normality. Under my definition of
+egalitarianism, it looks like I'd be happy at any of these jobs except
+as a transportation telecom specialist.
+
+    % Add a bibliography block to the postdoc
+    
+    
+\end{document}
