@@ -301,7 +301,7 @@ Caveats}\label{some-assumptions-and-caveats}}
 	\item
 		I will be displaying only partial and/or relevant results in tables.
 	\item
-		Code for the calculations will be made available at \todo{github link}
+		Code for the calculations will be made available at https://github.com/Laharah/ma255stats
 
   \end{itemize}
 \item
@@ -328,7 +328,7 @@ Caveats}\label{some-assumptions-and-caveats}}
 	\label{getting-my-feet-wet-creeping-on-people-i-met-once}}
 
 I met a woman at a python conference in early 2020. She said she worked
-or had worked for the government as an analyst-I can't remember which.
+or had worked for the government as an analyst---I can't remember which.
 We talked about what we did for a while, and at one point I remember asking how well her job
 payed; she said that she made ``around 65 grand'' per year.
 
@@ -395,7 +395,7 @@ This results in the following ANOVA table:
 	\begin{tabular}{r|lllrr}
 	& Df & Sum Sq & Mean Sq & F value & $P$-value\\
 	\hline
-		dept &  55 &  79328877331 & 1442343224 & 6.126613 & 2.759689e-30\\
+		dept &  55 &  79328877331 & 1442343224 & 6.1266 & 2.7597e-30\\
 		Residuals & 504 & 118653001472 &  235422622 &       &           \\
 	\end{tabular}
 \end{table}
@@ -481,15 +481,15 @@ Here is a look at our most significant results.
 	\center
 	\caption{Most Likely Depts. My Acquaintance Worked }
 	\label{tab:2}
-	\begin{tabular}{ll}
+	\begin{tabular}{lr}
   Department & $Pr\left\{ Dept. | sal. \right\} $\\
 \hline
-	 ADMINISTRATIVE SRVCS, DEPT OF & 0.03561180\\
-	 CONSUMER AND BUS SRVCS, DEPT  & 0.03643026\\
-	 PUBLIC EMPS RETIREMENT SYSTEM & 0.06175604\\
-	 TRANSPORTATION, DEPT OF       & 0.10322827\\
-	 OREGON HEALTH AUTHORITY       & 0.18219138\\
-	 HUMAN SERVICES, DEPARTMENT OF & 0.21858462\\
+	 ADMINISTRATIVE SRVCS, DEPT OF & 0.0356\\
+	 CONSUMER AND BUS SRVCS, DEPT  & 0.0364\\
+	 PUBLIC EMPS RETIREMENT SYSTEM & 0.0617\\
+	 TRANSPORTATION, DEPT OF       & 0.1032\\
+	 OREGON HEALTH AUTHORITY       & 0.1821\\
+	 HUMAN SERVICES, DEPARTMENT OF & 0.2185\\
 \end{tabular}
 \end{table}
 
@@ -803,11 +803,11 @@ All of which leaves me with this:
 	\centering
 	\caption{Most Likely Career I Can Get}
 	\label{tab:label}
-	\begin{tabular}{l|lll}
+	\begin{tabular}{l|llr}
 	  Career  & Average Growth Rate & $P$-value & Estimated Openings in 2023\\
 	\hline
-		CUSTODIAN         & 1.583333 & 0.02628355&  -1\\
-		RESEARCH ANALYST  & 5.380952 & 0.03370504& -18\\
+		CUSTODIAN         & 1.5833 & 0.02628&  -1\\
+		RESEARCH ANALYST  & 5.3809 & 0.03370& -18\\
 	
 	\end{tabular}
 \end{table}
@@ -895,15 +895,15 @@ results:
 \begin{table}[htpb]
 	\centering
 	\caption{Careers and Their Salary "Fairness"}
-		\begin{tabular}{ll}
+		\begin{tabular}{lr}
 			Career & Shapiro $P$-val\\
 		\hline
-			 RESEARCH ANALYST                             & 0.80949281\\
-			 ACCOUNTING TECH                              & 0.64147751\\
-			 ASSOCIATE IN GEOLOGY                         & 0.46369124\\
-			 TRUCK DRIVER                                 & 0.34486630\\
-			 ARCHIVIST                                    & 0.26270285\\
-			 TRANSPORTATION TELECOMMUNICATIONS SPECIALIST & 0.00694868\\
+			 RESEARCH ANALYST                             & 0.8094\\
+			 ACCOUNTING TECH                              & 0.6414\\
+			 ASSOCIATE IN GEOLOGY                         & 0.4636\\
+			 TRUCK DRIVER                                 & 0.3448\\
+			 ARCHIVIST                                    & 0.2627\\
+			 TRANSPORTATION TELECOMMUNICATIONS SPECIALIST & 0.0069\\
 		\end{tabular}
 \end{table}
 
