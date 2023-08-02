@@ -1,0 +1,930 @@
+% Some basic packages
+\documentclass[letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[english]{babel}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{adjustbox}
+\usepackage{hyperref}
+\usepackage[binary-units]{siunitx}
+
+
+
+%margins
+\usepackage[margin=0.75in]{geometry}
+
+% Don't indent paragraphs, leave some space between them
+\usepackage{parskip}
+
+% Hide page number when page is empty
+\usepackage{emptypage}
+\usepackage{subcaption}
+\usepackage{multicol}
+\usepackage{xcolor}
+
+% Other font I sometimes use.
+% \usepackage{cmbright}
+
+% Math stuff
+\usepackage{amsmath, amsfonts, mathtools, amsthm, amssymb}
+% Fancy script capitals
+\usepackage{mathrsfs}
+\usepackage{cancel}
+% Bold math
+\usepackage{bm}
+% Some shortcuts
+\newcommand\N{\ensuremath{\mathbb{N}}}
+\newcommand\R{\ensuremath{\mathbb{R}}}
+\newcommand\Z{\ensuremath{\mathbb{Z}}}
+\renewcommand\O{\ensuremath{\emptyset}}
+\newcommand\Q{\ensuremath{\mathbb{Q}}}
+\newcommand\C{\ensuremath{\mathbb{C}}}
+
+% Easily typeset systems of equations (French package)
+\usepackage{systeme}
+
+% Put x \to \infty below \lim
+\let\svlim\lim\def\lim{\svlim\limits}
+
+%Make implies and impliedby shorter
+\let\implies\Rightarrow
+\let\impliedby\Leftarrow
+\let\iff\Leftrightarrow
+\let\epsilon\varepsilon
+
+% Add \contra symbol to denote contradiction
+\usepackage{stmaryrd} % for \lightning
+\newcommand\contra{\scalebox{1.5}{$\lightning$}}
+
+% \let\phi\varphi
+
+% Command for short corrections
+% Usage: 1+1=\correct{3}{2}
+
+\definecolor{correct}{HTML}{009900}
+\newcommand\correct[2]{\ensuremath{\:}{\color{red}{#1}}\ensuremath{\to }{\color{correct}{#2}}\ensuremath{\:}}
+\newcommand\green[1]{{\color{correct}{#1}}}
+
+% horizontal rule
+\newcommand\hr{
+    \noindent\rule[0.5ex]{\linewidth}{0.5pt}
+}
+
+% hide parts
+\newcommand\hide[1]{}
+
+% si unitx
+\usepackage{siunitx}
+\sisetup{locale = US}
+
+% Environments
+\makeatother
+% For box around Definition, Theorem, \ldots
+\usepackage{mdframed}
+\mdfsetup{skipabove=1em,skipbelow=0em}
+\theoremstyle{definition}
+\newmdtheoremenv[nobreak=true]{lemma}{Lemma}
+\newmdtheoremenv[nobreak=true]{postulate}{Postulate}
+\newmdtheoremenv{conclusion}{Conclusion}
+\newmdtheoremenv{assume}{Assume}
+\newtheorem*{observe}{Observe}
+\newtheorem*{comment}{Comment}
+\newtheorem*{practice}{Practice}
+\newtheorem*{problem}{Problem}
+\newtheorem*{terminology}{Terminology}
+\newtheorem*{application}{Application}
+\newtheorem*{question}{Question}
+
+\newmdtheoremenv[nobreak=true]{definition}{Definition}
+\newtheorem*{eg}{Example}
+\newtheorem*{notation}{Notation}
+\newtheorem*{previouslyseen}{As previously seen}
+\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
+\newtheorem*{property}{Property}
+\newtheorem*{intuition}{Intuition}
+\newmdtheoremenv[nobreak=true]{prop}{Proposition}
+\newmdtheoremenv[nobreak=true]{theorem}{Theorem}
+\newmdtheoremenv[nobreak=true]{corollary}{Corollary}
+
+% End example and intermezzo environments with a small diamond (just like proof
+% environments end with a small square)
+\usepackage{etoolbox}
+\AtEndEnvironment{vb}{\null\hfill$\diamond$}%
+\AtEndEnvironment{intermezzo}{\null\hfill$\diamond$}%
+% \AtEndEnvironment{opmerking}{\null\hfill$\diamond$}%
+
+% Fix some spacing
+% http://tex.stackexchange.com/questions/22119/how-can-i-change-the-spacing-before-theorems-with-amsthm
+\makeatletter
+\def\thm@space@setup{%
+  \thm@preskip=\parskip \thm@postskip=0pt
+}
+
+
+% Exercise 
+% Usage:
+% \exercise{5}
+% \subexercise{1}
+% \subexercise{2}
+% \subexercise{3}
+% gives
+% Exercise 5
+%   Exercise 5.1
+%   Exercise 5.2
+%   Exercise 5.3
+\newcommand{\exercise}[1]{%
+    \def\@exercise{#1}%
+    \subsection*{Exercise #1}
+}
+
+\newcommand{\subexercise}[1]{%
+    \subsubsection*{Exercise \@exercise.#1}
+}
+
+
+% \lecture starts a new lecture (les in dutch)
+%
+% Usage:
+% \lecture{1}{di 12 feb 2019 16:00}{Inleiding}
+%
+% This adds a section heading with the number / title of the lecture and a
+% margin paragraph with the date.
+
+% I use \dateparts here to hide the year (2019). This way, I can easily parse
+% the date of each lecture unambiguously while still having a human-friendly
+% short format printed to the pdf.
+
+\usepackage{xifthen}
+\def\testdateparts#1{\dateparts#1\relax}
+\def\dateparts#1 #2 #3 #4 #5\relax{
+    \marginpar{\small\textsf{\mbox{#1 #2 #3 #5}}}
+}
+
+% \def\@lecture{}%
+% \newcommand{\lecture}[3]{
+%     \ifthenelse{\isempty{#3}}{%
+%         \def\@lecture{Lecture #1}%
+%     }{%
+%         \def\@lecture{Lecture #1: #3}%
+%     }%
+%     \subsection*{\@lecture}
+%     \marginpar{\small\textsf{\mbox{#2}}}
+% }
+
+
+
+% These are the fancy headers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+% LE: left even
+% RO: right odd
+% CE, CO: center even, center odd
+% My name for when I print my lecture notes to use for an open book exam.
+% \fancyhead[LE,RO]{Jared Anderson}
+
+% \fancyhead[RO,LE]{\@lecture} % Right odd,  Left even
+\fancyhead[RE,LO]{}          % Right even, Left odd
+
+\fancyfoot[RO,LE]{\thepage}  % Right odd,  Left even
+\fancyfoot[RE,LO]{}          % Right even, Left odd
+\fancyfoot[C]{\leftmark}     % Center
+
+\makeatother
+
+
+
+
+% Todonotes and inline notes in fancy boxes
+\usepackage{todonotes}
+\usepackage{tcolorbox}
+
+% Make boxes breakable
+\tcbuselibrary{breakable}
+
+% Verbetering is correction in Dutch
+% Usage: 
+% \begin{verbetering}
+%     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+%     tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+%     vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+%     no sea takimata sanctus est Lorem ipsum dolor sit amet.
+% \end{verbetering}
+\newenvironment{correction}{\begin{tcolorbox}[
+    arc=0mm,
+    colback=white,
+    colframe=green!60!black,
+    title=Opmerking,
+    fonttitle=\sffamily,
+    breakable
+]}{\end{tcolorbox}}
+
+% Noot is note in Dutch. Same as 'verbetering' but color of box is different
+\newenvironment{aside}[1]{\begin{tcolorbox}[
+    arc=0mm,
+    colback=white,
+    colframe=white!60!black,
+    title=#1,
+    fonttitle=\sffamily,
+    breakable
+]}{\end{tcolorbox}}
+
+
+
+
+% Figure support 
+\usepackage{import}
+\usepackage{xifthen}
+% \pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[2][1]{%
+    \def\svgwidth{#1\columnwidth}
+    \import{./figures/}{#2.pdf_tex}
+}
+
+\newcommand*{\ml}[2]{\multicolumn{1}{#1}{#2}}
+
+\pdfsuppresswarningpagegroup=1
+
+
+% My name
+\author{Jared Anderson}
+\begin{document}
+		
+\title{
+	Answering Questions With Government Transparency Data\\
+	\large An Exploration of private sector jobs
+}
+
+\maketitle
+    
+    
+My project is largely an exploration of Employee data for all government employees in
+Oregon from 2015 to 2022. (Data found at
+https://www.oregon.gov/transparency/Pages/State-Salaries.aspx)
+
+There are some questions that I believe I could answer using
+this data, some more relevant to me than others.
+
+\hypertarget{some-assumptions-and-caveats}{%
+\subsection{Some Assumptions and
+Caveats}\label{some-assumptions-and-caveats}}
+
+\begin{enumerate} \item This data is real life and economic in nature, which is to say, messy
+	and somewhat unnatural
+
+  \begin{itemize}
+  \item
+    I will be using an $\alpha$ of 0.05–this isn't physics. As this is essentially
+	economic data, this seems appropriate.
+  \item
+	  Confidence intervals will be set to 90\% in keeping with our generosity in terms of
+	  precision.
+\item
+	When calculating certain statistics, I will be sampling from the data. This is to
+	allow certain statistics to be computed using the tools I have learned. Other times
+	this is done to estimate a simpler distribution than the entire population's real
+	distribution. Any time this is done, it will be explicitly stated.
+  \end{itemize}
+\item
+	There is a large amount of data, (approximately 27\unit{\mega\byte} of text data). As
+	such, I will be making extensive use of R to calculate certain values and statistics.
+
+  \begin{itemize}
+	\item
+		I will be displaying only partial and/or relevant results in tables.
+	\item
+		Code for the calculations will be made available at \todo{github link}
+
+  \end{itemize}
+\item
+  This is for class. I'm trying to show I learned anything, sometimes
+  the data makes that hard to do:
+
+  \begin{itemize}
+  \item
+	  There will be times where in order to apply a particular statistical test, I will
+	  make the assumption that the data is normally distributed. This may not always be
+	  the case. Whenever this assumption is made, I will say so explicitly.
+	\item
+		When feasible, the first time a statistical test is encountered I will be showing
+		how the result of a statistic is calculated. Other statistics will be summarized.
+		I will also be briefly summarizing the methods I used to filter and manipulate the
+		data. Again see the code listing to see how a particular calculation was done.
+  \end{itemize}
+\end{enumerate}
+
+    
+
+\hypertarget{getting-my-feet-wet-creeping-on-people-i-met-once}{ 
+	\section{An Exercise In Conditional Probability}
+	\label{getting-my-feet-wet-creeping-on-people-i-met-once}}
+
+I met a woman at a python conference in early 2020. She said she worked
+or had worked for the government as an analyst-I can't remember which.
+We talked about what we did for a while, and at one point I remember asking how well her job
+payed; she said that she made ``around 65 grand'' per year.
+
+Looking at the data, there are analysts that work in over 50 different departments. I'm
+curious which department she was most most likely working at. This will let me get a
+"feel" for working with the data, and offers a good opportunity to practice. But first:
+
+\large{Assumptions \& Methods:}
+\begin{itemize}
+\item
+	I will be assuming that analyst pay in each dept is normally distributed.
+\item
+	I will be sampling from the dataset to estimate these distributions.
+\item
+	I will be disregarding departments that have less than 10 analysts to sample from.
+\end{itemize}
+
+    \hypertarget{step-1-filter-the-data}{%
+\subsection{Filtering And Sampling The Data}\label{step-1-filter-the-data}}
+
+My plan for sampling is to do as if I had surveyed 10 analysts from each department
+that employs analysts  and recorded their department and their annual salary. These
+samples will be random both by individuals and by time in the range from 2015 to 2020. 
+
+
+    \hypertarget{step-2-see-if-theres-even-a-difference-between-the-average-salaries-in-each-department}{%
+\subsection{Is Sampling By Department Necessary?}\label{step-2-see-if-theres-even-a-difference-between-the-average-salaries-in-each-department}}
+
+If every department pays it's analysts the same average wage, there may be no reason to
+sample from each department individually. To test this, I'm going to conduct an
+\textbf{Analysis of Variance} or ANOVA test. 
+
+For this test I'm going to assume: 
+
+\begin{enumerate}
+	\item Each department's salary distribution is normal (as was stated above).
+	\item Each department has the same standard deviation ($\sigma$) in the amount they
+		pay their analysts.
+\end{enumerate}
+
+These two assumptions are required to conduct an accurate ANOVA test. The other assumption
+requred for an ANOVA test is that the samples are simple random samples, which I have
+ensured. I will point out that it is unlikely that each departments pay has the same
+$\sigma^2$. However we can hope that they are similar enough to get some kind of useful
+information out of the test.
+
+The groups for the ANOVA test are going to be the departments and the values will be the
+samples taken from each department. 
+
+Our hypotheses are as such:
+
+$\displaystyle{H_0:\forall d \in \Omega \quad  \mu_{d} = \mu_{\Omega}}$, that is: each department pays their analysts the same on average.
+
+$\displaystyle{H_{A}: \exists  d \in \Omega \quad \text{where } \mu_{d} \neq
+\mu_{\Omega}}$ or, \textbf{not} every department pays their analysts the same on average.
+
+This results in the following ANOVA table:
+    
+
+\begin{table}[h]
+	\centering
+	\caption{ANOVA of Dept. Analyst Pay}
+	\label{tab:1}
+	\begin{tabular}{r|lllrr}
+	& Df & Sum Sq & Mean Sq & F value & $P$-value\\
+	\hline
+		dept &  55 &  79328877331 & 1442343224 & 6.126613 & 2.759689e-30\\
+		Residuals & 504 & 118653001472 &  235422622 &       &           \\
+	\end{tabular}
+\end{table}
+
+This $P$-value is extremely small, giving us high confidence that the departments
+\textbf{do not} pay their analysts the same on average. However given our assumption of
+normality and equal variance, we should check our work visually:
+
+
+
+
+    
+    
+
+\begin{figure}[H]
+	\center
+	\caption{Boxplot of Analysts Pay}
+	\label{fig:1}
+		\adjustimage{max size={0.5\linewidth}{0.5\paperheight}, caption={Barchart of
+		Sampled Analyst Pay}, label={figure 1}}{Project_files/Project_13_0.png}
+\end{figure}
+    
+    It's pretty clear looking at the chart that there is quite a lot of
+variance in the pay among the departments, With a few particular
+outliers in the middle.
+
+
+\hypertarget{step-3-in-comes-the-bayes}{%
+\subsection{Bayesian Analysis}\label{step-3-in-comes-the-bayes}}
+
+Now, to calculate the probability of the woman I spoke to working in any given department,
+I must calculate the \emph{conditional probability} that she works there. In other words,
+We will calculate the probability that she works at a particular department \emph{given}
+that she is paid a certain amount. This is written as $Pr\{\text{working in dept. }x | \text{she is paid }y\}$
+
+The formula to find this is called Bayes formula and it is written:
+
+\[
+Pr \left\{ A|B \right\} = \frac{P(B|A)P(A)}{P(B)}
+.\] 
+
+Using these probabilities as analogs for elements of our problem, we assign them like so:
+
+\begin{align*}
+	P(A) &= \text{The probability that she works at a particular department}\\
+	P(B|A) &= \text{The probability that she makes gets a certain salary \emph{assuming}
+	that we know} \\ &\text{ she works at a particular department}\\
+	P(B) &= \text{The \textbf{total} probability that she makes a particular salary}\\
+	Pr\left\{ A|B \right\} &= \text{The probability that she works at a particular
+	department \emph{given} that we know} \\ &\text{ what her salary is. This is the value we're
+	looking for}
+\end{align*}
+
+Now I'll cover \emph{how} you would extract these number from the data.
+
+\begin{itemize}
+	\item 
+		$P(A)$: We can calculate this by taking a department, counting the \textbf{total}
+		number of employees there, and dividing by the total of \textbf{all} the
+		employees.
+	\item
+		$P(B|A)$ : Since we've assumed that all departments pay their analysts with a
+		normal distribution, we can use our samples to estimate the average and standard
+		deviation of a particular department's payscale. Using this estimated normal
+		distribution,  we can calculate the probabilty that she makes a certain amount of
+		money (within an arbitrary but reasonable range)  assuming that she worked there.
+	\item
+		$P(B)$: To calculate this we must \emph{sum} $P(B|A)$ across  \textbf{all}
+		departments.
+\end{itemize}
+
+Solving the above equation for every department, we can find the Departments with the
+highest probability that she worked there. The only variable that I need to supply is the
+range of salaries we should be testing for. I decided (again arbitrarily) that given she
+said she makes about \$65,000, a good lower range is about \$63,000, any less and she
+would probably have said she makes about \$60k. Likewise I set the upper bound of the
+range to \$67,000, any more and I think it likely she would have told me she makes about
+\$70k.
+
+Here is a look at our most significant results.
+
+\begin{table}[h]
+	\center
+	\caption{Most Likely Depts. My Acquaintance Worked }
+	\label{tab:2}
+	\begin{tabular}{ll}
+  Department & $Pr\left\{ Dept. | sal. \right\} $\\
+\hline
+	 ADMINISTRATIVE SRVCS, DEPT OF & 0.03561180\\
+	 CONSUMER AND BUS SRVCS, DEPT  & 0.03643026\\
+	 PUBLIC EMPS RETIREMENT SYSTEM & 0.06175604\\
+	 TRANSPORTATION, DEPT OF       & 0.10322827\\
+	 OREGON HEALTH AUTHORITY       & 0.18219138\\
+	 HUMAN SERVICES, DEPARTMENT OF & 0.21858462\\
+\end{tabular}
+\end{table}
+
+looking at the table, we can conclude that It is most likely that she was working in the
+Department of Human Services, the Oregon Heath Authority, or the Department of
+Transportation (in that order)
+
+As a sanity check, we can check an make sure that the sum of all these probabilities is
+equal to one-which I am happy to report is the case. 
+
+\subsection{Was This A Waste of Time?}
+
+Having been looking at this data for a while I couldn't help but notice that the top 3
+most likely departments are also the departments that employ the most analysts. 
+
+This makes me wonder if we could have simply found the departments that employed the most
+analysts and been just as well off. 
+
+To check, I'll graph our calculated probabilities against the proportion of all analysts
+each department employs and calculate the correlation coefficient.
+
+    
+\begin{figure}[H]
+	\caption{How much Time Did I Waste?}
+	\label{fig:2}
+	\begin{center}
+	\adjustimage{max size={0.5\linewidth}{0.5\paperheight}}{Project_files/Project_17_1.png}
+	\end{center}
+\end{figure}
+    
+After looking at the graph, it should not surprise you to hear that the calculated
+correlation coefficient, $r=0.9829$ ; an almost perfect one-to-one relationship. We could
+have saved a ton of work if we had just looked at the porportions of total analysts for
+each department. It should be noted that the most likely Departments (Human Services, The
+Health Authority, and Dept. of Transportation), are true outliers. The lower section of
+the graph looks much more interesting. If we somehow knew she \emph{didn't} work in those
+departments, we could eliminate them from our calculations and hopefully get more
+interesting results.
+
+    \hypertarget{now-its-all-about-me}{%
+\section{Should I Get a Job in Government?}\label{now-its-all-about-me}}
+
+I have been working for myself as an IT contractor for more than a decade now. While I
+like the pay and the near total flexibility it affords me, there are certain charms to the
+idea of having a "normal" job. Structure, a matching retirement account, and above all
+else: sweet sweet healthcare that you don't have to pay for.
+
+The pros and cons are difficult to weigh against each other-there are a lot of factors.
+The next few questions will concern answering questions that could help me make such a
+decision.
+
+
+    \hypertarget{will-the-public-sector-even-be-hiring}{%
+\subsection{Is The Oregon Public Sector Even Hiring?}\label{will-the-public-sector-even-be-hiring}}
+
+How difficult would it be for me to get a job in government-any job? To help me answer
+this question, I can analyse the data to see if Oregon is likely open more positions over
+time. Also, I could use this information to calculate how many jobs I can expect them to
+add this year.
+
+To calculate this statistic, we will first gather the entire dataset (our whole
+"population") and organize it by year and then count the total number of employees for
+that given year.
+
+Once that's been done (not as easy as it sounds when you don't really know R), we get a
+set of values that looks like this:
+
+\begin{table}[H]
+	\centering
+	\caption{Total Workers Per Year}
+	\label{tab:label}
+	\begin{tabular}{r|llllllll}
+		Year & 2015& 2016&2017&2018&2019&2020&2021&2023\\
+		Workers & 36767&37064&33219&37187&38033&39160&38740&45068
+	\end{tabular}
+\end{table}
+
+Now that we have these values it's fairly trivial to get the mean and standard deviation
+for both rows of data:
+
+\begin{align*}
+	\overline{x}&= 2018.5 \\
+	\overline{y}&= 38154.875 \\
+	s_{x} &= 2.4495 \\
+	s_{y}&= 3329.0208 \\
+.\end{align*}
+
+Using these values I can now calculate the
+\textbf{correlation coefficient}, that I somewhat glossed over above. The correlation
+coefficient is denoted by the letter $r$, and it's equation for a given set of points is:
+
+\[
+r_{x, y} = \frac{1}{n-1}\left[ \left( \frac{x_{1}-\mu_{x}}{\sigma_{x}} \right)\left(
+\frac{y_{1}-\mu_{y}}{\sigma_{y}} \right) +
+\left(\frac{(x_{2}-\mu_{x})}{\sigma_{x}}\right)\left( \frac{y_{2}-\mu_{y}}{\sigma_{y}} \right) + \dots \right]
+.\] 
+
+If we plug in the values above and solve, we get $r=0.7460$, which indicates a somewhat
+strong correlation between the year and the number of government employees.
+Using this value we can then calculate the least squares linear regression line of the data. 
+
+The formula of the LSLR line is
+
+\[
+\hat{y} = \beta_0 +\beta_1x
+.\] 
+
+where $\beta_1$ is the average rate of change in the number of workers per year, and
+$\beta_0$ is the $y$ intercept of the data (which in our case is somewhat nonsense, as
+there is no year 0 A.D, and if there was, Oregon wouldn't have existed, and
+it certainly couldn't have had the millions of "negative" employees the model predicts it to
+have had).
+
+Notice that we don't have to estimate this regression line, because we have access to the
+actual values from the entire population. The coefficients ($\beta_0$ and $\beta_1$ ) can
+be calculated as such:
+
+\begin{align}
+\beta_{1}  &= r \frac{\sigma_{y}}{\sigma_{x}} \\
+\beta_{0}  & = \mu_y-\beta_{1}\mu_x
+\end{align}
+
+Plugging in our numbers from above and solving gives us:
+
+\[
+\hat{y} = 1014x - 2008196
+.\] 
+
+This equation will allow us to graph both our points and the least squares regression line
+like so:
+
+\begin{figure}[H]
+	\caption{Yearly Oregon Government Job Growth}
+	\label{fig:3}
+	\center
+	\adjustimage{max size={0.5\linewidth}{0.5\paperheight}}{Project_files/Project_21_6.png}
+\end{figure}
+    
+
+Lets see how confident we can be that we've gotten the slope of the regression line by
+calculating a \textbf{confidence interval}. We'll need two things:
+
+\begin{enumerate}
+	\item The standard error of $\beta_1$: \[
+	\sqrt{ \frac{1}{n-2} \sum_{i=1}^{n}(y_{i}-\hat{y}_{i})^{2} }
+	.\] 
+\item and the quantile of the student's-$t$ distribution with degrees of freedom $d$ over
+	the interval $[\alpha / 2, 1-\alpha / 2]$:
+	\[
+	t_{d, \alpha / 2}
+	.\] 
+\end{enumerate}
+    
+The standard error has a term $s_e$ in it that hasn't been calculated yet. It's formula
+is:
+\[
+s_{e} = s_{y|x} = \sqrt{ \frac{1}{n-2} \sum_{i=1}^{n}(y_{i}-\hat{y}_{i})^{2} }
+.\] 
+
+I leave the calculation of $SE_{\beta_1}$ as an exercise for the reader.
+
+Plugging in our values and getting the $t$-distribution quantiles from a computer or a
+table we get
+
+\begin{align}
+	SE_{\beta_1}&= 369.5217 \\
+	t_{7, 0.25} &= 1.9432 \\
+\end{align}
+
+Now we can finally calculate our confidence interval:
+
+\begin{align*}
+\text{C.I}&=  \beta_1 \pm t_{n-2, \alpha / 2} \times SE_{\beta_1}\\
+	  &= [295.7503, 1731.845] \\
+.\end{align*}
+
+which to be frank is not great for a 90\% confidence interval. It seems we have a bit of a
+precision problem. That said, let's test our hypothesis that the number of employees is
+rising year-over-year \emph{at all}. To be more formal let's state our null and
+alternative hypotheses.
+
+\begin{align*}
+	H_0&: \beta_1 \le   0 \quad \text{or there is a negative or no difference in employees each year}\\
+	H_A&: \beta_1 > 0 \quad \text{or there is a positive correlation between the year and
+	the number of employees.}
+\end{align*}
+
+To calculate the $p$-value we'll calculate a $t$-stat first.
+
+\begin{align}
+	t \text{-stat} &= \frac{\beta_1 - m_0}{SE_{\beta_1}} \\
+	&= 2.7435 \\
+\end{align}
+And the last thing we need is to use the $t$-distribution to get our $p$-value:
+
+\begin{align*}
+	P\text{-Value} &= Pr \left\{ t_{n-2} > t \text{-stat} | H_0 \right\}  \\
+	&= 0.0168 \\
+.\end{align*}
+
+As I said in the beginning, we've given ourselves a generous $\alpha$ of 0.05. This
+$P$-value gets us well under that line, which means that we can confidently
+\textbf{reject} the null hypothesis.
+
+Technically I've answered my question, I'm confident that the number of government
+employees is growing. But I want to be a little more specific; if I apply for a position
+this year, do I expect there to be a job there for me?
+
+Answering this is not only straight forward, but easy. All I have to do is plug in the
+desired year into my least square linear regression model:
+
+\begin{align*}
+	\hat{y} &= \lfloor \beta_0 + \beta_1(2023)\rfloor\\
+	&=  -2351\\
+.\end{align*}	
+
+It seems that the answer to that question is a resounding no---my model predicts that Oregon
+will lay off more than 2000 people next year. It seems like the reason for this result is
+that 2023 was a noticeable positive outlier in terms of number of employees. My model
+expects there to be some kind of regression to the mean. But I suppose it's possible that
+there is a factor or variable that can't be found in my data, and 2022 marks the beginning
+of a new growth period. 
+
+
+
+
+    
+
+    
+    \hypertarget{how-many-new-positions-that-i-might-be-interested-in-do-i-expect-to-be-added-next-year}{%
+\subsection{How Many New Positions That I Might Be Interested In Do I
+Expect To Be Added Next
+Year?}\label{how-many-new-positions-that-i-might-be-interested-in-do-i-expect-to-be-added-next-year}}
+
+First I will filter out jobs that I'm not particularly interested in doing. This leaves
+me with a dataset of 6068 jobs over the last eight years. Of these jobs, how many do I
+expect will have openings this year?
+
+To answer this question we won't really be doing anything new. We'll be doing more or less
+the same as we did in section 2.1. First we'll group together each remaining job by year
+and calculate a least square regression line. A quick summary of the data and variables is
+listed here:
+\begin{table}[H]
+	\centering
+	\caption{Candidate Jobs Per Year}
+	\label{tab:label}
+	\begin{tabular}{r|llllllll}
+		Year & 2015& 2016&2017&2018&2019&2020&2021&2023\\
+		Jobs & 741& 740& 707& 739& 781&773& 789&798
+	\end{tabular}
+\end{table}
+
+\begin{align*}
+	r &= 0.8218\\
+	\beta_1&= 10.524 \\
+	\beta_0	&= -20483.810 \\
+	SE_{\beta_1} &= 2.979 \\
+	t \text{-value} &= 3.533 \\
+.\end{align*}	
+
+Frankly I'm more interested in what I can roughly expect than I am about the surety that
+my trend line is positive, so I'll calculate a 90\% confidence interval. Honestly that's
+more confident than I've been about almost anything in real life lately which makes it good
+enough for me:
+
+\begin{align*}
+	\text{C.I.} &= \beta_1 \pm t_{6, 0.05 / 2} \times SE_{\beta_1} \\
+				&= [4.7349, 16.313] \\
+.\end{align*}
+
+That gives me some hope, it certainly seems likely that there is slow but steady growth in
+my candidate jobs. Let's take a look at the graph:
+\begin{figure}{H}
+	\center
+	\caption{Candidate Jobs Per Year}
+	\label{fig:4}
+	\adjustimage{max size={0.5\linewidth}{0.5\paperheight}}{Project_files/Project_29_4.png}
+\end{figure}
+
+Now to see how many openings total I should expect this year:
+
+\begin{align*}
+	\hat{y} &= \lfloor 10.524(2023)-20483.810 \rfloor \\
+	&=  -2\\
+.\end{align*}
+
+
+Once again, I am likely out of luck if I'm looking to switch into a government job in the immediate future.
+
+\subsection{Which of The Specific Jobs I'm Willing To Do Are Growing?}
+
+While I may be fairly confident that there is \emph{overall} growth in my candidate jobs,
+which specifically are those? If they're just jobs that I can tolerate, without much
+window for growth, I may not be terribly interested.
+
+To answer this question, I'm going to separate the jobs not only by year, but also by
+job type. This will give us 23 jobs with 8 years of records each.
+
+I'll then take each job type, and calculate a least square linear regression on the number
+of employees in that job type based on the year.  I'll filter this data \emph{again} by
+ignoring any regressions that have negative growth but also any jobs where I'm not
+confident enough that my calculated growth isn't a mirage (where the $P$-value is too
+high.)
+
+Though I already expect the answer, I'll also calculate how many openings in those
+jobs I can expect this year.
+
+All of which leaves me with this:
+
+\begin{table}[htpb]
+	\centering
+	\caption{Most Likely Career I Can Get}
+	\label{tab:label}
+	\begin{tabular}{l|lll}
+	  Career  & Average Growth Rate & $P$-value & Estimated Openings in 2023\\
+	\hline
+		CUSTODIAN         & 1.583333 & 0.02628355&  -1\\
+		RESEARCH ANALYST  & 5.380952 & 0.03370504& -18\\
+	
+	\end{tabular}
+\end{table}
+
+Whelp, I'm glad that at least \emph{something} has edged out custodian. It seems to have
+done so fairly well too in terms of growth. My model predicts much more research analysts
+to be let go next year. This is likely a function of the fact that there are many more
+researchers in the dataset, and that the number of custodians you need only goes up when
+you expand offices.
+
+\hypertarget{which-jobs-that-i-could-do-have-the-most-fair-pay}{%
+\subsection{Which Jobs That I Could Do Have The Most Fair
+Pay?}\label{which-jobs-that-i-could-do-have-the-most-fair-pay}}
+
+looking at the data, there are many jobs descriptions that are followed
+by numbers. I take this to mean that you can be promoted from one level
+to another. If I took one of these jobs (again these are ones I'd be willing to actually do),
+it's important to me that I'm working with people that are being paid
+fairly---it makes for a less hostile work environment. In this case,
+I'll settle for the qualifier that the salaries in that job are normally
+distributed.
+
+
+It's important that I be able to quantify a distribution's "normalness" so that I can rank
+one career against another. To do this I'm going to be using a Shapiro-Wilk test. Because
+the Shapiro-Wilk test tends to overfit with any sample size of about 60 or so, I'm going
+to sample from the population of each career. I'll take 30 simple random samples from each
+one to use in the test.
+
+Before I do that though, I want to get an intuitive sense for how normal these
+distributions are. To do that I'm going to graph histograms and Q-Q plots for a few
+randomly selected careers.
+
+A Q-Q plot is made by placing your observations in rank order ($y_1\le y_2\le \dots \le
+y_n $). We then shift these points slightly off center. Not by much, just enough so that
+we don't get strange values at the edges. We then scale these values by a factor of $1 /
+n$. In more concrete terms, if $j$ is the $j$th order of the numbers go through the
+function
+
+\[
+f(j) = \frac{j-1 / 2}{n}
+.\] 
+
+This pulls the numbers in so that $y_{(j)}$, roughly moves to it's quantile position so
+long as the distribution was normal to start with. These numbers become the normal scores or $n$-scores. 
+
+Once done, we can plot these $n$-scores against an actually standardized set of ordered
+\emph{values}, $w_{(j)}$ :
+
+\[
+w_{(j)} = \frac{y_{(j)} - \overline{y}}{s_y} \approx z_{(j)}
+.\] 	
+
+All of this allows you to plot the $w_{(j)}$ values against the "maybe" standardized
+values. 
+
+If the values were sampled from a roughly normal distribution, the graph should
+approximate a straight line along the $(1,1)$ slope. 
+
+Here are a couple of the histograms and Q-Q plots for you to compare. 
+
+
+\begin{figure}[H]
+		\centering
+		\caption{Sample Histograms and Their QQ-Plots}
+		\label{fig:label}
+		\begin{tabular}{cc}
+		
+    \adjustimage{max
+	size={0.225\linewidth}{0.225\paperheight}}{Project_files/Project_33_0.png} &
+	\adjustimage{max
+	size={0.225\linewidth}{0.225\paperheight}}{Project_files/Project_33_1.png}\\
+    \adjustimage{max
+size={0.225\linewidth}{0.225\paperheight}}{Project_files/Project_33_2.png} & 
+    \adjustimage{max size={0.225\linewidth}{0.225\paperheight}}{Project_files/Project_33_3.png}
+
+		\end{tabular}
+\end{figure}
+
+By looking at the graphs, you can see that the histograms are roughly normal (if you
+squint), but the Q-Q graphs are more clearly aligned along the 45 degree axis.
+
+Finally we can put our samples through the Shapiro-Wilk test and take a look at the
+results:
+\begin{table}[htpb]
+	\centering
+	\caption{Careers and Their Salary "Fairness"}
+		\begin{tabular}{ll}
+			Career & Shapiro $P$-val\\
+		\hline
+			 RESEARCH ANALYST                             & 0.80949281\\
+			 ACCOUNTING TECH                              & 0.64147751\\
+			 ASSOCIATE IN GEOLOGY                         & 0.46369124\\
+			 TRUCK DRIVER                                 & 0.34486630\\
+			 ARCHIVIST                                    & 0.26270285\\
+			 TRANSPORTATION TELECOMMUNICATIONS SPECIALIST & 0.00694868\\
+		\end{tabular}
+\end{table}
+
+
+
+    
+    Well, it looks like \textbf{most} of the positions that I'm interested
+have strong evidence in favor of normality. Under my definition of
+egalitarianism, it looks like I'd be happy at any of these jobs except
+as a transportation telecom specialist (which is okay since I don't really know what that
+is.
+
+\subsection{Conclusion}
+
+I can't say that I've been completely swayed one way or the other as far as taking a
+government job is concerned. I certainly think that it's not something I should decide
+this year given my predictions from this data. I was surprised to see that most of the
+careers I'm interested in have "fair" pay. 
+
+To really help me decide, I should attempt to collect similar data for the private sector,
+match up like jobs, compare their salaries, growth, and "fairness". 
+
+    
+\end{document}
